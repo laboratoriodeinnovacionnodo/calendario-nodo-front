@@ -10,14 +10,13 @@ const _geist = Geist({ subsets: ["latin"] });
 const _geistMono = Geist_Mono({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: 'CALENDARIOBACK - Gestión de Eventos',
-  description: 'Aplicación de calendario para gestión de eventos',
-  generator: 'v0.app',
+  title: 'NODO TECNOLÓGICO - Gestión de Eventos',
+  description: 'Aplicación de calendario para gestión de eventos y convocatorias en NODO TECNOLÓGICO',
   manifest: '/manifest.json',
   appleWebApp: {
     capable: true,
     statusBarStyle: 'black-translucent',
-    title: 'CALENDARIOBACK',
+    title: 'NODO TECNOLÓGICO',
   },
   formatDetection: {
     telephone: false,
@@ -25,20 +24,14 @@ export const metadata: Metadata = {
   icons: {
     icon: [
       {
-        url: '/icon-light-32x32.png',
-        media: '(prefers-color-scheme: light)',
-      },
-      {
-        url: '/icon-dark-32x32.png',
-        media: '(prefers-color-scheme: dark)',
-      },
-      {
-        url: '/icon.svg',
-        type: 'image/svg+xml',
+        url: '/nodo-logo.png',
+        sizes: '512x512',
+        type: 'image/png',
       },
     ],
-    apple: '/apple-icon.png',
+    apple: '/nodo-logo.png',
   },
+    generator: 'v0.app'
 }
 
 export default function RootLayout({
@@ -49,11 +42,11 @@ export default function RootLayout({
   return (
     <html lang="es">
       <head>
-        <meta name="theme-color" content="#26a7fc" />
+        <meta name="theme-color" content="#0891b2" />
         <meta name="mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-        <meta name="apple-mobile-web-app-title" content="CALENDARIOBACK" />
+        <meta name="apple-mobile-web-app-title" content="NODO TECNOLÓGICO" />
         <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
       </head>
       <body className={`font-sans antialiased`}>
