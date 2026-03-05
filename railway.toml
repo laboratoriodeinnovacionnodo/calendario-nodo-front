@@ -1,6 +1,9 @@
 [build]
 builder = "NIXPACKS"
 
+[build.nixpacksPlan.phases.setup]
+nixPkgs = ["nodejs_20", "pnpm-9_x"]
+
 [deploy]
 numReplicas = 1
 restartPolicyType = "ALWAYS"
