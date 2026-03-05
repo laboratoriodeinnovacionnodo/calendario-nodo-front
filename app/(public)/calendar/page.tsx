@@ -92,20 +92,30 @@ export default function PublicCalendarPage() {
   const handleWhatsAppClick = (event: Event) => {
     const phone = event.contactoFormal.replace(/\D/g, '')
 
-    const message = `Hola, le recordamos que tiene un evento programado:
+    const message = `👋 *Estimado/a,*
 
-  📅 ${event.titulo}
-  📍 ${AREA_LABELS[event.area]}
-  🗓️ ${formatDate(event.fechaDesde, { day: 'numeric', month: 'long', year: 'numeric' })}
-  ⏰ ${event.horaDesde} - ${event.horaHasta}
+  Le recordamos que tiene un evento programado:
 
-  📍 Dirección: Chacabuco 675, San Fernando del Valle de Catamarca, Catamarca, Argentina
-  ⏰ Recordá presentarte 15 minutos antes del horario asignado.
+  ━━━━━━━━━━━━━━━━━━━
+  📋 *${event.titulo}*
+  ━━━━━━━━━━━━━━━━━━━
 
-  ¡Te esperamos! 
-  Saludos cordiales,
-  Coordinacion de Eventos - NODO TECNOLÓGICO`
-  const whatsappUrl = `https://wa.me/${phone}?text=${encodeURIComponent(message)}`
+  📅 *Fecha:* ${formatDate(event.fechaDesde, { day: 'numeric', month: 'long', year: 'numeric' })}
+  ⏰ *Horario:* ${event.horaDesde} - ${event.horaHasta}
+  🏢 *Área:* ${AREA_LABELS[event.area]}
+  📍 *Lugar:* Chacabuco 675, San Fernando del Valle de Catamarca
+
+  ━━━━━━━━━━━━━━━━━━━
+
+  ⚠️ *Recordá presentarte 15 minutos antes del horario asignado.*
+
+  ¡Te esperamos! 🙌
+
+  Coordinación de Eventos.
+  
+  Nodo Tecnológico 🤖`
+
+    const whatsappUrl = `https://wa.me/${phone}?text=${encodeURIComponent(message)}`
     window.open(whatsappUrl, '_blank')
   }
 
