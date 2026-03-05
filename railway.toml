@@ -1,5 +1,8 @@
 [build]
 builder = "NIXPACKS"
 
+[variables]
+NODE_VERSION = "22"
+
 [build.nixpacks]
 cacheDirectories = []
