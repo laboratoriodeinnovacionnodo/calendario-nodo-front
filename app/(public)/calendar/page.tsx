@@ -105,7 +105,7 @@ export default function PublicCalendarPage() {
 
     https://share.google/ryNXjnxbFTd2FKFox
 
-  ⚠️ *Recordá presentarte 15 minutos antes del horario asignado.*
+  ⚠️ *Recordá presentarte 30 minutos antes del horario asignado.*
 
   ¡Te esperamos! 🙌
 
