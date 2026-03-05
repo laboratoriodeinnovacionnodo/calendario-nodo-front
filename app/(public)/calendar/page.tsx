@@ -96,9 +96,7 @@ export default function PublicCalendarPage() {
 
   Le recordamos que tiene un evento programado:
 
-  ━━━━━━━━━━━━━━━━━━━
   📋 *${event.titulo}*
-  ━━━━━━━━━━━━━━━━━━━
 
   📅 *Fecha:* ${formatDate(event.fechaDesde, { day: 'numeric', month: 'long', year: 'numeric' })}
   ⏰ *Horario:* ${event.horaDesde} - ${event.horaHasta}
@@ -106,8 +104,6 @@ export default function PublicCalendarPage() {
   📍 *Lugar:* Av. Güemes & Av. Virgen del Valle. Nodo Tecnologico
 
     https://share.google/ryNXjnxbFTd2FKFox
-
-  ━━━━━━━━━━━━━━━━━━━
 
   ⚠️ *Recordá presentarte 15 minutos antes del horario asignado.*
 
