@@ -6,24 +6,31 @@ const nextConfig = {
   images: {
     unoptimized: true,
   },
-  // --- AÑADE ESTO ---
   async headers() {
     return [
       {
-        // Esto aplica a todas las rutas de tu página
+        // 1. Regla general para rutas y HTML
         source: '/:path*',
         headers: [
           {
             key: 'Cache-Control',
-            // 'no-store' obliga al navegador y a Railway a pedir el archivo siempre
-            // 'must-revalidate' asegura que no se use una versión vieja sin preguntar
             value: 'no-store, no-cache, must-revalidate, proxy-revalidate',
           },
         ],
       },
       {
-        // Para archivos estáticos (JS, CSS) que SÍ tienen hash en el nombre, 
-        // dejamos que se cacheen porque Next.js les cambia el nombre en cada build.
+        // 2. REGLA CRUCIAL: El Service Worker y el Manifest nunca deben cachearse
+        // Esto permite que el navegador vea que el sw.js cambió a v2 inmediatamente
+        source: '/(sw.js|manifest.json)',
+        headers: [
+          {
+            key: 'Cache-Control',
+            value: 'no-store, no-cache, must-revalidate, proxy-revalidate',
+          },
+        ],
+      },
+      {
+        // 3. Archivos estáticos de Next.js (estos sí son seguros de cachear)
         source: '/_next/static/:path*',
         headers: [
           {

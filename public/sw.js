@@ -1,7 +1,9 @@
-const CACHE_NAME = 'calendarioback-v1';
+// 1. Subimos la versión para forzar la invalidación del caché viejo
+const CACHE_NAME = 'calendarioback-v2'; 
+
 const urlsToCache = [
   '/',
-  '/index.html',
+  // '/index.html', // En Next.js suele ser redundante con '/', mejor quitarlo si da problemas
   '/manifest.json',
   '/icon.svg',
   '/icon-light-32x32.png',
@@ -9,85 +11,59 @@ const urlsToCache = [
   '/apple-icon.png',
 ];
 
-// Install event - cache resources
+// Install event - Cache inicial
 self.addEventListener('install', event => {
   event.waitUntil(
     caches.open(CACHE_NAME)
-      .then(cache => cache.addAll(urlsToCache))
-      .then(() => self.skipWaiting())
-      .catch(err => console.log('[PWA] Install failed:', err))
+      .then(cache => {
+        console.log('[PWA] Precaching resources');
+        return cache.addAll(urlsToCache);
+      })
+      .then(() => self.skipWaiting()) // Fuerza al SW a activarse sin esperar a cerrar pestañas
   );
 });
 
-// Activate event - clean up old caches
+// Activate event - Limpieza de versiones antiguas
 self.addEventListener('activate', event => {
   event.waitUntil(
     caches.keys().then(cacheNames => {
       return Promise.all(
         cacheNames.map(cacheName => {
           if (cacheName !== CACHE_NAME) {
+            console.log('[PWA] Deleting old cache:', cacheName);
             return caches.delete(cacheName);
           }
         })
       );
-    }).then(() => self.clients.claim())
+    }).then(() => self.clients.claim()) // Toma control de las pestañas abiertas inmediatamente
   );
 });
 
-// Fetch event - serve from cache, fallback to network
+// Fetch event - Estrategia: Stale-While-Revalidate
 self.addEventListener('fetch', event => {
-  // Skip non-GET requests
-  if (event.request.method !== 'GET') {
-    return;
-  }
+  if (event.request.method !== 'GET') return;
 
-  // Skip external requests
-  if (!event.request.url.startsWith(self.location.origin)) {
-    return;
-  }
+  // Solo manejar peticiones de nuestro propio origen
+  if (!event.request.url.startsWith(self.location.origin)) return;
 
-  // API requests - network first
-  if (event.request.url.includes('/api/')) {
-    event.respondWith(
-      fetch(event.request)
-        .then(response => {
-          const clone = response.clone();
-          caches.open(CACHE_NAME).then(cache => {
-            cache.put(event.request, clone);
-          });
-          return response;
-        })
-        .catch(() => {
-          return caches.match(event.request);
-        })
-    );
-    return;
-  }
-
-  // Static assets - cache first
   event.respondWith(
-    caches.match(event.request)
-      .then(response => {
-        if (response) {
-          return response;
-        }
-        return fetch(event.request)
-          .then(response => {
-            const clone = response.clone();
-            caches.open(CACHE_NAME).then(cache => {
-              cache.put(event.request, clone);
-            });
-            return response;
-          });
-      })
-      .catch(() => {
-        return new Response('Offline - recurso no disponible', {
-          status: 503,
-          statusText: 'Service Unavailable',
-          headers: new Headers({
-            'Content-Type': 'text/plain'
-          })
+    caches.open(CACHE_NAME).then(cache => {
+      return cache.match(event.request).then(cachedResponse => {
+        
+        // Ejecutamos la petición a la red siempre
+        const networkFetch = fetch(event.request).then(networkResponse => {
+          // Si la respuesta es válida, la guardamos/actualizamos en el caché
+          if (networkResponse && networkResponse.status === 200) {
+            cache.put(event.request, networkResponse.clone());
+          }
+          return networkResponse;
+        }).catch(() => {
+          // Si falla la red (offline), no hacemos nada, ya tenemos el cachedResponse
         });
-      })
+
+        // Retornamos el caché si existe, si no, esperamos a la red
+        return cachedResponse || networkFetch;
+      });
+    })
   );
 });
