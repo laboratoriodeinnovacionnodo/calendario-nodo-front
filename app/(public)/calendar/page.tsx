@@ -91,8 +91,21 @@ export default function PublicCalendarPage() {
 
   const handleWhatsAppClick = (event: Event) => {
     const phone = event.contactoFormal.replace(/\D/g, '')
-    const message = `Hola, le recordamos que tiene un evento programado:\n\n📅 ${event.titulo}\n📍 ${AREA_LABELS[event.area]}\n🗓️ ${formatDate(event.fechaDesde, { day: 'numeric', month: 'long', year: 'numeric' })}\n⏰ ${event.horaDesde} - ${event.horaHasta}\n\nMás información:\n${event.informacion.substring(0, 100)}...`
-    const whatsappUrl = `https://wa.me/${phone}?text=${encodeURIComponent(message)}`
+
+    const message = `Hola, le recordamos que tiene un evento programado:
+
+  📅 ${event.titulo}
+  📍 ${AREA_LABELS[event.area]}
+  🗓️ ${formatDate(event.fechaDesde, { day: 'numeric', month: 'long', year: 'numeric' })}
+  ⏰ ${event.horaDesde} - ${event.horaHasta}
+
+  📍 Dirección: Chacabuco 675, San Fernando del Valle de Catamarca, Catamarca, Argentina
+  ⏰ Recordá presentarte 15 minutos antes del horario asignado.
+
+  ¡Te esperamos! 
+  Saludos cordiales,
+  Coordinacion de Eventos - NODO TECNOLÓGICO`
+  const whatsappUrl = `https://wa.me/${phone}?text=${encodeURIComponent(message)}`
     window.open(whatsappUrl, '_blank')
   }
 
@@ -269,7 +282,8 @@ export default function PublicCalendarPage() {
                       </p>
                     </div>
                   </div>
-
+                  
+                  {isAdmin && (
                   <div>
                     <h3 className="font-semibold mb-1 flex items-center gap-2">
                       <Phone className="h-4 w-4" />
@@ -284,6 +298,7 @@ export default function PublicCalendarPage() {
                       </p>
                     )}
                   </div>
+                  )}
 
                   {selectedEvent.anexos && selectedEvent.anexos.length > 0 && (
                     <div>
