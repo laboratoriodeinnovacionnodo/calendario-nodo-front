@@ -102,8 +102,10 @@ export default function PublicCalendarPage() {
 
   📅 *Fecha:* ${formatDate(event.fechaDesde, { day: 'numeric', month: 'long', year: 'numeric' })}
   ⏰ *Horario:* ${event.horaDesde} - ${event.horaHasta}
-  🏢 *Área:* ${AREA_LABELS[event.area]}
-  📍 *Lugar:* Chacabuco 675, San Fernando del Valle de Catamarca
+  🏢 *Área:* ${AREA_LABELS[event.area] ?? 'Sin definir'}
+  📍 *Lugar:* Av. Güemes & Av. Virgen del Valle. Nodo Tecnologico
+
+    https://share.google/ryNXjnxbFTd2FKFox
 
   ━━━━━━━━━━━━━━━━━━━
 
