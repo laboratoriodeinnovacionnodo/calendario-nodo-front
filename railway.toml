@@ -1,8 +1,6 @@
 [build]
 builder = "NIXPACKS"
 
-[variables]
-NODE_VERSION = "22"
-
-[build.nixpacks]
-cacheDirectories = []
+[deploy]
+numReplicas = 1
+restartPolicyType = "ALWAYS"
